@@ -43,15 +43,13 @@ export class CheckoutPage {
         await this.page.locator('//button[text()="Finish"]').click();
     }
 
-    async validateOrderCompletion(){
-        const orderMessage = this.page.locator('//h2[text()="Thank you for your order!"]');
-        await expect(orderMessage).toBeVisible();
-        return true;
+    async getOrderCompletionMessage() {
+        return this.page.locator('//h2[text()="Thank you for your order!"]');
     }
 
-    async completeCheckout(): Promise<boolean> {
+    async completeCheckout() {
         await this.clickFinishButton();
-        return await this.validateOrderCompletion();
+        return await this.getOrderCompletionMessage();
     }
 
     async verifyItemNamesInCart(itemNames: string[]): Promise<boolean> {

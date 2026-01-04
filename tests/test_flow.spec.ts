@@ -7,11 +7,8 @@ test.describe('SauceDemo Login Flow', () => {
     test('Happy Flow - Basic Checkout', async ({page, homePage, checkoutPage}) => {
         await homePage.addItemToCart(ADD_TO_CART_CONFIG.ITEMS_TO_ADD_BASIC);
         const { items: selectedItems, prices: selectedPrices, total: totalPrice } = homePage.getCartData();
-        console.log('Selected items:', selectedItems);
-        console.log('Selected prices:', selectedPrices);
-        console.log('Total price:', totalPrice);
-        
-         
+        console.log('Selected items:', selectedItems,'Prices:', selectedPrices, 'Total Price:', totalPrice);
+
         // Verify items are added
         await expect(homePage.verifyItemsAddedToCart(PAGE_LABELS.REMOVE_BUTTON_TEXT, '3')).resolves.toBeTruthy();
         
@@ -38,7 +35,7 @@ test.describe('SauceDemo Login Flow', () => {
         console.log('Verified checkout total: $' + expectedTotal.toFixed(2));
         
         // Complete checkout
-        await expect(checkoutPage.completeCheckout()).resolves.toBeTruthy();
+        await expect(checkoutPage.completeCheckout()).resolves.toHaveText('Thank you for your order!');
     });
 
     //User adds 3 items, removes 1 from cart, then verifies the cart updates correctly
@@ -78,7 +75,7 @@ test.describe('SauceDemo Login Flow', () => {
         await expect(checkoutPage.verifyItemNamesInCart(remainingItems)).resolves.toBeTruthy();
         
         // Complete checkout
-        await expect(checkoutPage.completeCheckout()).resolves.toBeTruthy();
+        await expect(checkoutPage.completeCheckout()).resolves.toHaveText('Thank you for your order!');
     });
 
     // User adds items from inventory, opens product details page, adds another item,
@@ -101,9 +98,7 @@ test.describe('SauceDemo Login Flow', () => {
         await page.waitForTimeout(ADD_TO_CART_CONFIG.WAIT_TIME_MS);
         
         const { items: selectedItems, prices: selectedPrices, total: totalPrice } = homePage.getCartData();
-        console.log('All selected items:', selectedItems);
-        console.log('Selected prices:', selectedPrices);
-        console.log('Total price:', totalPrice);
+
         
         // Verify 3 items added
         await expect(homePage.verifyAddToCartCount()).resolves.toBe('3');
@@ -123,7 +118,7 @@ test.describe('SauceDemo Login Flow', () => {
         await expect(checkoutPage.verifyItemNamesInCart(selectedItems)).resolves.toBeTruthy();
         
        // Complete checkout
-        await expect(checkoutPage.completeCheckout()).resolves.toBeTruthy();
+        await expect(checkoutPage.completeCheckout()).resolves.toHaveText('Thank you for your order!');
         
     });
 });
